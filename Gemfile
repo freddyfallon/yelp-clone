@@ -43,6 +43,7 @@ group :development, :test do
   gem 'capybara'
   gem 'haml'
   gem 'rspec-collection_matchers'
+  gem 'shoulda'
 end
 
 group :development do
