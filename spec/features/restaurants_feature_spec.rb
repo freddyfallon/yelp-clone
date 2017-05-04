@@ -84,6 +84,17 @@ feature 'restaurants' do
       expect(page).to have_content 'Deep fried goodness'
       expect(current_path).to eq "/restaurants/#{Restaurant.last.id}"
     end
+
+    scenario "does not let a user edit a restaurant that they don't own" do
+      visit '/restaurants'
+      click_link 'Sign out'
+      click_link 'Sign up'
+      fill_in 'Email', with: 'otheruser@test.com'
+      fill_in 'Password', with: '123456'
+      fill_in 'Password confirmation', with: '123456'
+      click_button 'Sign up'
+      expect(page).not_to have_link 'Edit KFC'
+    end
   end
 
   context 'deleting restaurants' do
@@ -98,6 +109,17 @@ feature 'restaurants' do
       click_link 'Delete KFC'
       expect(page).not_to have_content 'KFC'
       expect(page).to have_content 'Restaurant deleted successfully'
+    end
+
+    scenario "does not let a user delete a restaurant that they don't own" do
+      visit '/restaurants'
+      click_link 'Sign out'
+      click_link 'Sign up'
+      fill_in 'Email', with: 'otheruser@test.com'
+      fill_in 'Password', with: '123456'
+      fill_in 'Password confirmation', with: '123456'
+      click_button 'Sign up'
+      expect(page).not_to have_link 'Delete KFC'
     end
   end
 
